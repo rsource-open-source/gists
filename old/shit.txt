@@ -1,0 +1,70 @@
+server manage perms {
+    set up
+    modify
+    delete
+    disable
+    enable
+    scan
+}
+@everyone {
+    look up
+    add rsource role
+    (secret) rtv
+}
+
+can have up to 10 announcements per server, can be raised if rsource dev approves
+only 1 announcement per channel
+
+@everyone {
+    r[times {map, player}
+        player {
+            {player} {gamemode} {}
+        }
+}
+
+server {
+    r[setup {
+        //needs server manage perms
+        //launches await message chain
+        ask which game {surf, bhop, both}
+        ask which style [auto, sw, hsw, scroll, bw, ao, wo]
+        ask which channel (reg)
+        ask if role mention {@role, roleid, rolename, -n, -cr rolename}
+        //-cr rolename: create role and set
+        //-n: none
+        ask if wants to be notified for x ammount of improvement {
+            ask which role {@role, roleid, rolename, -n, -cr rolename}
+            ask which channel (if improvement)
+        }
+        "setting up" promise {
+            check if can text in chat {
+                y: return, n: error and tell; cancel process
+            }
+            apply in db {
+                pass: return, fail: error and tell; cancel process; return to error logs
+            }
+            return
+        }
+    }
+
+    r[modify {
+        //needs server manage perms
+        //launches await message chain
+        ask which channel {#channel, channelname, channelid}
+        //check if exists {
+            y: return, n: error and tell; cancel process
+        }
+        ask what edit {roles, style, game, channel, notif}
+        //go on
+    }
+
+    r[scan {
+        //search db for all channels in server
+        return val or say none
+    }
+
+    r[disable {channel}
+    r[enable {channel}
+
+    r[delete {channel} (do r u sure)
+}
